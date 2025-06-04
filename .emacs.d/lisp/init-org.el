@@ -5,6 +5,8 @@
 
 (require 'patch-org)
 
+(global-org-modern-mode)
+
 (add-to-list 'org-modules 'org-habit t)
 (add-hook 'org-mode-hook
           (function (lambda () (setq fill-column (string-to-number "70")))))

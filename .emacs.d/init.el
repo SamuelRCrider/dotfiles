@@ -7,7 +7,7 @@
 (require 'init-styles)
 (require 'init-defuns)
 (require 'init-web)
-(require 'init-pdf)
+;;(require 'init-pdf)
 (require 'functions)
 
 (with-eval-after-load 'dired (require 'init-dired))
@@ -26,9 +26,9 @@
   (dolist (hook '(css-mode-hook html-mode-hook sass-mode-hook js-mode-hook js2-mode-hook typescript-mode python-mode))
     (add-hook hook 'rainbow-mode)))
 
-(setq org-roam-v2-ack t)
-(with-eval-after-load 'org (require 'init-org))
-(autoload 'helm-org-switch "org")
+;;(setq org-roam-v2-ack t)
+;;(with-eval-after-load 'org (require 'init-org))
+;;(autoload 'helm-org-switch "org")
 
 (with-eval-after-load 'exwm
   (require 'init-exwm))
@@ -57,7 +57,7 @@
 (global-set-key (kbd "C-x c #") 'helm-system-packages)
 
 (with-eval-after-load 'lisp-mode (require 'init-lisp))
-(add-hook 'emacs-lisp-mode-hook 'boogs/init-lispy)
+;;(add-hook 'emacs-lisp-mode-hook 'boogs/init-lispy)
 
 (with-eval-after-load 'eglot (require 'init-eglot))
 

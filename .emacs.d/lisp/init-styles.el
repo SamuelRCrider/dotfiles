@@ -10,8 +10,8 @@
       ;; 120
       ;; 150
       ;; 250
-      300
-    250))
+      170
+    170))
 
 (set-face-attribute 'default nil
                     :font "Iosevka Term"
@@ -154,7 +154,7 @@
 ;;; org
 (defun set-org-faces (colors)
   (let* ((variable-tuple
-          (cond ((x-list-fonts "Iosevka Comfy") '(:font "Iosevka Comfy"))
+          (cond ('(:font "Iosevka Comfy"))
                 ((x-family-fonts "Sans Serif")   '(:family "Sans Serif"))
                 (nil (warn "Cannot find a Sans Serif Font. Install Source Sans Pro."))))
          (base-font-color     (face-foreground 'default nil 'default))

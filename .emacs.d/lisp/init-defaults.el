@@ -72,8 +72,8 @@
 (setq-default tab-width 2)
 ;; (defvaralias 'standard-indent 'tab-width)
 (setq-default indent-tabs-mode nil)
-(add-hook 'prog-mode-hook 'highlight-indent-guides-mode)
-(setq highlight-indent-guides-method 'character)
+;;(add-hook 'prog-mode-hook 'highlight-indent-guides-mode)
+;;(setq highlight-indent-guides-method 'character)
 
 ;;; time
 (setq display-time-format " %a %e %b, %H:%M "
@@ -217,9 +217,7 @@
   (<= (length (window-list)) 1))
 
 (defun laptop-screen-p ()
-  (and
-   (= (x-display-pixel-width) 3000)
-   (= (x-display-pixel-height) 2000)))
+  t)
 
 (defun maybe-enable-olivetti-mode ()
   "Enable olivetti mode if on monitor and only a single buffer is visible."
@@ -237,13 +235,13 @@
       (olivetti-mode 1)
     (olivetti-mode -1)))
 
-(add-hook 'window-configuration-change-hook 'maybe-enable-olivetti-mode)
-(add-hook 'kill-buffer-hook 'maybe-enable-olivetti-mode)
-(add-hook 'after-change-major-mode-hook 'maybe-enable-olivetti-mode)
+;;(add-hook 'window-configuration-change-hook 'maybe-enable-olivetti-mode)
+;;(add-hook 'kill-buffer-hook 'maybe-enable-olivetti-mode)
+;;(add-hook 'after-change-major-mode-hook 'maybe-enable-olivetti-mode)
 
-(setq olivetti-body-width 0.65
-      olivetti-minimum-body-width 72
-      olivetti-recall-visual-line-mode-entry-state t)
+;;(setq olivetti-body-width 0.65
+      ;;olivetti-minimum-body-width 72
+      ;;olivetti-recall-visual-line-mode-entry-state t)
 
 ;; kill this buffer
 (global-set-key (kbd "C-x C-k") 'kill-this-buffer)
@@ -330,13 +328,13 @@
        ("~/projects/boogs.gitlab.io/branches/master/")
        ("~/common-lisp/shosha/")))
 
-(require 'perspective)
-(customize-set-variable 'persp-mode-prefix-key (kbd "C-M-w"))
-(customize-set-variable 'persp-initial-frame-name "work")
-(customize-set-variable 'persp-state-default-file "~/.emacs.d/lisp/persp-state")
+;;(require 'perspective)
+;;(customize-set-variable 'persp-mode-prefix-key (kbd "C-M-w"))
+;;(customize-set-variable 'persp-initial-frame-name "work")
+;;(customize-set-variable 'persp-state-default-file "~/.emacs.d/lisp/persp-state")
 
-(add-hook 'kill-emacs-hook #'persp-state-save)
-(persp-mode)
+;;(add-hook 'kill-emacs-hook #'persp-state-save)
+;;(persp-mode)
 
 ;; Add advice to stop hangs on EXWM
 ;; The problem happens with floating windows that disappear - like open file dialog or a Zoom dialog when starting a meeting

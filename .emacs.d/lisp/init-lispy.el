@@ -28,10 +28,12 @@
 (defun boogs/init-lispy ()
   (when (require 'lispy nil t)
     (if (require 'sly nil 'noerror)
-        (progn
-          (add-to-list 'lispy-goto-symbol-alist
-                       '(sly-mrepl-mode lispy-goto-symbol-lisp le-lisp))
-          (setq lispy-use-sly t)))
+        (setq lispy-use-sly t)
+        ;;(progn
+          ;;(add-to-list 'lispy-goto-symbol-alist
+            ;;           '(sly-mrepl-mode lispy-goto-symbol-lisp le-lisp))
+          ;;(setq lispy-use-sly t)))
+      )
     (set-face-foreground 'lispy-face-hint "#FF00FF")
     (when (require 'lispyville nil t)
       (add-hook 'lispy-mode-hook 'lispyville-mode))
