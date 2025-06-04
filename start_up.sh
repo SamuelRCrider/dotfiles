@@ -38,8 +38,7 @@ function final_report() {
 }
 
 trap final_report EXIT
-
-set -e
+set -eo pipefail
 
 # --- Prerequisite Checks ---
 echo "🔍 Checking prerequisites..."
@@ -72,7 +71,9 @@ fi
 # --- Package Installs ---
 echo "🍺 Installing packages..."
 for pkg in kitty tmux neovim lazygit fzf ripgrep fd; do
-  if brew install "$pkg"; then
+  if brew list "$pkg" &>/dev/null; then
+    mark_success "$pkg (already installed)"
+  elif brew install "$pkg"; then
     mark_success "$pkg"
   else
     mark_failure "$pkg"
@@ -81,25 +82,55 @@ done
 
 # --- Fonts ---
 echo "🔤 Installing JetBrainsMono Nerd Font..."
-if brew tap homebrew/cask-fonts && brew install --cask font-jetbrains-mono-nerd-font; then
+brew tap homebrew/cask-fonts || true
+if brew install --cask font-jetbrains-mono-nerd-font; then
   mark_success "JetBrainsMono Nerd Font"
 else
   mark_failure "JetBrainsMono Nerd Font"
 fi
 
-# --- Neovim + Kitty + Tmux Cleanup ---
-echo "🧹 Removing old Neovim, Kitty, and Tmux configs..."
+# --- Cleanup ---
+echo "🧹 Removing old Neovim config..."
 rm -rf ~/.config/nvim ~/.local/share/nvim ~/.local/state/nvim ~/.cache/nvim
-rm -rf ~/.config/kitty
-rm -f ~/.tmux.conf
-mark_success "Cleaned up old configs"
+mark_success "Neovim config cleanup"
+
+echo "📦 Backing up existing Kitty and Tmux configs..."
+timestamp=$(date +%s)
+if [ -d ~/.config/kitty ]; then
+  mv ~/.config/kitty ~/.config/kitty.bak.$timestamp
+  echo "  - Backed up ~/.config/kitty to ~/.config/kitty.bak.$timestamp"
+fi
+if [ -f ~/.tmux.conf ]; then
+  mv ~/.tmux.conf ~/.tmux.conf.bak.$timestamp
+  echo "  - Backed up ~/.tmux.conf to ~/.tmux.conf.bak.$timestamp"
+fi
+mark_success "Backed up Kitty and Tmux configs"
 
 # --- Symlinking Configs ---
 echo "🔗 Linking your config files..."
-if ln -sf ~/dotfiles/nvim ~/.config/nvim &&
-  ln -sf ~/dotfiles/.tmux.conf ~/.tmux.conf &&
-  ln -sf ~/dotfiles/kitty ~/.config/kitty; then
+mkdir -p ~/.config
+if ln -s ~/dotfiles/nvim ~/.config/nvim &&
+  ln -s ~/dotfiles/.tmux.conf ~/.tmux.conf &&
+  ln -s ~/dotfiles/kitty ~/.config/kitty; then
   mark_success "Symlinked dotfiles"
 else
   mark_failure "Symlinking dotfiles"
+fi
+
+# --- Validate Symlinks ---
+echo "✅ Verifying symlink integrity..."
+if [ -L ~/.config/nvim ] && [ -e ~/.config/nvim ]; then
+  mark_success "Verified nvim symlink"
+else
+  mark_failure "nvim symlink broken"
+fi
+if [ -L ~/.tmux.conf ] && [ -e ~/.tmux.conf ]; then
+  mark_success "Verified tmux.conf symlink"
+else
+  mark_failure "tmux.conf symlink broken"
+fi
+if [ -L ~/.config/kitty ] && [ -e ~/.config/kitty ]; then
+  mark_success "Verified kitty symlink"
+else
+  mark_failure "kitty symlink broken"
 fi
