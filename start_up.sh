@@ -70,7 +70,7 @@ fi
 
 # --- Package Installs ---
 echo "🍺 Installing packages..."
-for pkg in kitty tmux neovim lazygit fzf ripgrep fd; do
+for pkg in tmux neovim lazygit fzf ripgrep fd; do
   if brew list "$pkg" &>/dev/null; then
     mark_success "$pkg (already installed)"
   elif brew install "$pkg"; then
@@ -79,6 +79,14 @@ for pkg in kitty tmux neovim lazygit fzf ripgrep fd; do
     mark_failure "$pkg"
   fi
 done
+
+# --- Kitty ---
+echo "🐱 Installing Kitty terminal via official script..."
+if curl -L https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin; then
+  mark_success "Kitty"
+else
+  mark_failure "Kitty"
+fi
 
 # --- Fonts ---
 echo "🔤 Installing JetBrainsMono Nerd Font..."
